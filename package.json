@@ -1,0 +1,15 @@
+{
+  "name": "family-manager",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev -w apps/client",
+    "dev:server": "npm run dev -w apps/server",
+    "build:client": "npm run build -w apps/client",
+    "lint": "npm run lint -w apps/client",
+    "typecheck": "npm run typecheck -w apps/client"
+  }
+}
