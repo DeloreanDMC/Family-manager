@@ -1,13 +1,9 @@
-import { Link, useRouterState } from '@tanstack/react-router'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { motion } from 'framer-motion'
-import {
-  LayoutDashboard,
-  Gift,
-  ListTodo,
-  User,
-} from 'lucide-react'
+import { LayoutDashboard, Gift, ListTodo, User, LogOut } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/stores/authStore'
 
 const navItems = [
   { to: '/', label: 'Главная', icon: LayoutDashboard },
@@ -21,7 +17,7 @@ export function Shell({ children }: { children: ReactNode }) {
   const isLoginPage = routerState.location.pathname === '/login'
 
   if (isLoginPage) {
-    return <main className="min-h-screen bg-background">{children}</main>
+    return <>{children}</>
   }
 
   return (
@@ -34,16 +30,45 @@ export function Shell({ children }: { children: ReactNode }) {
 }
 
 function Sidebar() {
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate({ to: '/login' })
+  }
+
   return (
     <aside className="hidden md:flex w-64 flex-col border-r border-border bg-card p-4">
       <div className="mb-8 px-2">
         <h2 className="text-xl font-bold">Family Manager</h2>
       </div>
-      <nav className="flex flex-col gap-1">
+
+      <nav className="flex flex-1 flex-col gap-1">
         {navItems.map((item) => (
           <SidebarLink key={item.to} {...item} />
         ))}
       </nav>
+
+      {user && (
+        <div className="mt-auto border-t border-border pt-4">
+          <div className="flex items-center gap-3 rounded-lg px-3 py-2">
+            <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full bg-muted" />
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium truncate">{user.name}</div>
+              <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              title="Выйти"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </aside>
   )
 }
