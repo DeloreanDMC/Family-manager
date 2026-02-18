@@ -1,0 +1,93 @@
+PROJECT: Family Manager | TYPE: SPA + API | LANG: RU ui, EN code | USERS: 2 (couple)
+FEATURES: gifts-wishlist, plans-tasks, points-requests, travel(future)
+STATUS: Phase 1 (frontend+mocks, no backend)
+ROOT: Family-manager/ | CLIENT: apps/client/ | SERVER: apps/server/ (Phase 2)
+
+--- STACK ---
+frontend: React 19, TypeScript strict, Vite
+routing: TanStack Router v1 (file-based, apps/client/src/routes/)
+data: TanStack Query v5 + ky (HTTP, apps/client/src/lib/api.ts)
+state: Zustand (apps/client/src/stores/)
+ui: shadcn/ui + Tailwind CSS 4 (NO CSS-in-JS, NO inline styles)
+animation: Framer Motion
+backend(p2): NestJS + PostgreSQL + Prisma + Google OAuth + Passport.js
+
+--- STRUCTURE: apps/client/src/ ---
+routes/__root.tsx     — root layout (Shell + nav)
+routes/index.tsx      — / Dashboard
+routes/login.tsx      — /login Google OAuth
+routes/gifts.tsx      — /gifts wishlists
+routes/plans.tsx      — /plans tasks
+routes/profile.tsx    — /profile settings
+components/ui/        — shadcn copies (Button Card Input Dialog Badge...)
+components/layout/    — Shell.tsx sidebar(desktop)+bottombar(mobile)
+components/shared/    — dashboard widgets, composite components
+services/             — API fns (ky), Phase 1 = mocks
+stores/authStore.ts   — auth state Zustand
+mocks/auth.ts         — mock auth
+types/user.ts         — User type
+lib/api.ts            — ky instance
+lib/utils.ts          — helpers
+
+--- ROUTES ---
+/login       → Google OAuth page
+/            → Dashboard (widgets: tasks, gifts status, quick actions)
+/gifts       → Wishlist (own + partner)
+/plans       → Plans & tasks (shared + personal)
+/profile     → Profile, settings, theme toggle
+
+--- TEAM ---
+KM = Konstantin | ZD = second dev
+
+--- TASKS: PHASE 1 ---
+KM:
+  K1  feature/page-login     — login UI, Google btn, mock-auth, redirect
+  K2  feature/page-dashboard — widget layout, grid, enter animations
+  K3  feature/page-dashboard — parallax hero section
+  K4  feature/page-profile   — avatar, info, theme toggle
+  K5  feature/auth-guard     — redirect unauth → /login
+ZD:
+  Z1  feature/ui-components  — shadcn base + animated (Button Card Input Dialog Badge)
+  Z2  feature/page-gifts     — wishlist, gift cards, add/remove
+  Z3  feature/page-gifts     — card animations, statuses (want/bought/gifted)
+  Z4  feature/page-plans     — task list, checklists, create/delete
+  Z5  feature/page-plans     — drag-drop sort, animations
+SYNC: after K2+Z1 review styles; after K5+Z3 integrate dashboard widgets with mock data
+
+--- GIT ---
+main = stable, never commit directly
+branches: feature/<name> from main
+commit format: <type>(<scope>): <desc>
+types: feat fix chore style refactor docs test
+examples:
+  feat(gifts): add wishlist card component
+  fix(router): fix redirect after login
+  style(dashboard): add parallax hero
+
+--- PHASE 2: BACKEND ---
+B1  feature/backend-init — NestJS + Prisma + PostgreSQL setup
+B2  feature/backend-auth — Google OAuth + Passport + JWT guards (KM)
+B3  feature/backend-api  — users CRUD (KM)
+B4  feature/backend-api  — gifts CRUD (ZD)
+B5  feature/backend-api  — plans CRUD (ZD)
+B6  feature/connect-api  — replace mocks with real API (KM+ZD)
+
+--- PHASE 3: FUTURE ---
+points-requests system | travel planning | push-notifications | PWA
+
+--- RULES (for Claude) ---
+1. branch per major task: git checkout -b feature/<name>
+2. conventional commits only
+3. NO push/merge to main without user confirmation
+4. add shadcn: npx shadcn-ui@latest add <component>
+5. Tailwind only, no CSS-in-JS
+6. TypeScript strict, no any
+7. Phase 1: use mocks, no real backend needed
+8. before big task: show plan + wait approval
+9. after task: npm run dev works + no TS errors (npm run typecheck) + lint clean
+
+--- CHECKS (per feature branch) ---
+npm run dev          — starts without errors
+npm run typecheck    — no TS errors
+npm run lint         — ESLint + Prettier clean
+mobile adaptation    — not broken
