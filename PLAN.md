@@ -104,6 +104,7 @@ Family-manager/
 
 - **`main`** — стабильная ветка, всегда рабочий код
 - **`feature/<название>`** — для каждой задачи/фичи отдельная ветка
+- **`bugfix/<название>`** — для исправления багов; мержим в `main` после фикса
 - Мержим в `main` после завершения задачи
 - Не коммитим напрямую в `main`
 
@@ -122,6 +123,7 @@ feature/backend-init            — инициализация NestJS
 feature/backend-auth            — Google OAuth на беке
 feature/backend-api             — CRUD API
 feature/connect-api             — подключение фронта к беку
+bugfix/page-login               — баги мобильного вида (logout, user info)
 ```
 
 ### Формат коммитов

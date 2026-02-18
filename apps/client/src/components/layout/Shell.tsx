@@ -23,7 +23,8 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
-      <main className="flex-1 p-6 pb-20 md:pb-6">{children}</main>
+      <MobileHeader />
+      <main className="flex-1 p-6 pt-16 pb-20 md:pt-6 md:pb-6">{children}</main>
       <BottomBar />
     </div>
   )
@@ -93,6 +94,35 @@ function SidebarLink({ to, label, icon: Icon }: (typeof navItems)[number]) {
         </>
       )}
     </Link>
+  )
+}
+
+function MobileHeader() {
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+  const navigate = useNavigate()
+
+  if (!user) return null
+
+  const handleLogout = () => {
+    logout()
+    navigate({ to: '/login' })
+  }
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 flex md:hidden items-center justify-between border-b border-border bg-card px-4 py-2">
+      <div className="flex items-center gap-2">
+        <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full bg-muted" />
+        <span className="text-sm font-medium">{user.name}</span>
+      </div>
+      <button
+        onClick={handleLogout}
+        className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+        title="Выйти"
+      >
+        <LogOut className="h-4 w-4" />
+      </button>
+    </header>
   )
 }
 

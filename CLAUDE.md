@@ -27,6 +27,7 @@ apps/client/src/
 
 ## Rules (mandatory)
 - Each major task → separate branch `feature/<name>` from `main`
+- Bug fixes → separate branch `bugfix/<name>` from `main`
 - Commits: Conventional Commits (`feat(area): desc`)
 - **Never push or merge to main without user confirmation**
 - New shadcn components: `npx shadcn-ui@latest add <name>`
