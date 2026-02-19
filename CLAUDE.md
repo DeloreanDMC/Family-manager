@@ -29,6 +29,9 @@ apps/client/src/
 - Each major task → separate branch `feature/<name>` from `main`
 - Commits: Conventional Commits (`feat(area): desc`)
 - **Never push or merge to main without user confirmation**
+- **UI components structure:** each component → own folder with `ComponentName.tsx` + `component-name.stories.tsx`
+  - ❌ No `index.tsx` for components (but `index.ts` is OK)
+  - Example: `ui/button/button.tsx`, `ui/card/card.tsx`, `ui/dialog/dialog.tsx`
 - New shadcn components: `npx shadcn-ui@latest add <name>`
 - Styles: Tailwind only, no inline styles
 - Types: strict, no `any`
