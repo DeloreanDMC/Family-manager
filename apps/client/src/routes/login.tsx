@@ -13,7 +13,9 @@ export const Route = createFileRoute('/login')({
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
-  const login = useAuthStore((s) => s.login)
+  const login = useAuthStore(
+    (state) => state.login,
+  )
   const navigate = useNavigate()
 
   const handleLogin = async (userId: string) => {

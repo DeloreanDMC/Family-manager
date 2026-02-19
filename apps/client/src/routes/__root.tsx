@@ -9,7 +9,9 @@ export const Route = createRootRoute({
 })
 
 function RootLayout() {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isAuthenticated = useAuthStore(
+    (state) => state.isAuthenticated,
+  )
   const navigate = useNavigate()
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const isLoginPage = pathname === '/login'
